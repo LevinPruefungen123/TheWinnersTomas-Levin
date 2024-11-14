@@ -14,11 +14,11 @@ def main():
     while True:
         set_target(payload_vesta_station)
         time.sleep(30)
-        buyIron('Vesta Station', 'IRON', 12)
+        buyIron('Vesta Station', 'IRON', 24)
         
         set_target(payload_core_station)
         time.sleep(30)
-        sellIron('Core Station', 'IRON', 12)
+        sellIron('Core Station', 'IRON', 24)
  
 
 
