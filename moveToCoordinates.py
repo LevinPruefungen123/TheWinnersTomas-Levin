@@ -1,7 +1,7 @@
 import requests
 
 url = "http://192.168.100.13:2009/set_target"
-payload = {"target": {"x": -20100, "y": 11300}} # Hier koordinaten Editieren um an einen X-Beliebigen Ort zu gehen.
+payload = {"target": {"x": -7907, "y": 2619}} # Hier koordinaten Editieren um an einen X-Beliebigen Ort zu gehen.
 
 def set_target(url, payload):
     try:

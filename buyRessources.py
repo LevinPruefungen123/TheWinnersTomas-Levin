@@ -1,6 +1,5 @@
 import requests
 import time
-import Laser
  
 #Variables
 url = "http://192.168.100.13:2009/set_target"
