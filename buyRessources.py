@@ -1,5 +1,6 @@
 import requests
 import time
+import Laser
  
 #Variables
 url = "http://192.168.100.13:2009/set_target"
@@ -12,12 +13,12 @@ payload_gold_station = {"target": {"x": -4783, "y": -5664}}
  
 #Main
 def main():
-    resourceToBuy = "GOLD"
+    resourceToBuy = "IRON"
     if (resourceToBuy == "IRON"):
         while True:
             set_target(payload_vesta_station)
             time.sleep(30)
-            buyIron('Vesta Station', 'IRON', 24)
+            buyItem('Vesta Station', 'IRON', 24)
 
             set_target(payload_core_station)
             time.sleep(30)
@@ -27,31 +28,15 @@ def main():
         while True: 
             set_target(payload_gold_station)
             time.sleep(40)
-            buyGold('Shangris Station', "GOLD", 24)
+            buyItem('Shangris Station', "GOLD", 24)
 
             set_target(payload_core_station)
             time.sleep(40)
             sellAtCore('Core Station', 'GOLD', 24)
     
 
-
-
-
-
-
 #Functions 
-def buyIron(target,item,amount):
-    payload = {"station": target, "what": item, "amount": amount}
-    try:
-        response = requests.post("http://192.168.100.13:2011/buy", json=payload)
-        if response.status_code == 200:
-            print(f"TheOne")
-        else:
-            print(f"TheTwo")
-    except requests.RequestException as e:
-        print(f"Error setting target: {e}")
-
-def buyGold(target,item,amount):
+def buyItem(target,item,amount):
     payload = {"station": target, "what": item, "amount": amount}
     try:
         response = requests.post("http://192.168.100.13:2011/buy", json=payload)
