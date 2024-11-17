@@ -1,6 +1,6 @@
 import requests
 import time
-
+import buyRessources
 # Define the base URLs for the APIs
 BASE_URL_HOLD = "http://192.168.100.13:2012"
 BASE_URL_BUY = "http://192.168.100.13:2011"
@@ -70,7 +70,7 @@ def fill_cargo_hold():
     maxRow = 11 
 
     
-
+    buyRessources.buyItem('Vesta Station', 'IRON', 12)
     while items_bought < total_to_buy:
         # Move to the next position
         if current_x >= 12:
@@ -83,10 +83,7 @@ def fill_cargo_hold():
             current_x = 0
             current_y = 0
             # FILL FIRST ROW OF INVENTORY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            indexlol = 0
-            while indexlol >= 7:
-                response = requests.post(urllaser)
-                time.sleep(12)
+            buyRessources.buyItem('Vesta Station', 'IRON', 12)
 
             
 
@@ -103,15 +100,11 @@ def fill_cargo_hold():
         current_x += 1
 import moveToCoordinates
 if __name__ == "__main__":
-    moveToCoordinates.set_target(urltarget, payload)
-    time.sleep(70)
-
-    moveToCoordinates.set_target(urltarget, payload2)
-    requests.put("http://192.168.100.13:2004/thruster", '{"thrust_percent" : 40}')
-    time.sleep(1)
-    requests.put("http://192.168.100.13:2004/thruster", '{"thrust_percent" : 0}')
-
-    fill_cargo_hold()
-
-    moveToCoordinates.set_target(urltarget, {"target": "Core Station"})
+    while True:
+        buyRessources.set_target({"target": "Vesta Station"})
+        time.sleep(30)
+        fill_cargo_hold()
+        buyRessources.set_target({"target": "Core Station"})
+        time.sleep(30)
+        buyRessources.sellAtCore('Core Station', 'IRON', 142)
 

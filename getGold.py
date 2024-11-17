@@ -24,7 +24,6 @@ requests.put("http://192.168.100.13:2004/thruster", '{"thrust_percent" : 0}')
 # Ausgangsposition / Laser wird aktiviert
 
 while True:
-    sortStorage.move_all_items_down()
     response = requests.post(urllaser) #activate laser
     print(requests.get("http://192.168.100.13:2018/state").text) #print laser status
     time.sleep(11)
