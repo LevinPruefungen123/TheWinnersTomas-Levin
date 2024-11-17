@@ -1,12 +1,14 @@
 import requests
 import time
 import buyRessources
+import getGold
+import buyRessources
+
 # Define the base URLs for the APIs
 BASE_URL_HOLD = "http://192.168.100.13:2012"
 BASE_URL_BUY = "http://192.168.100.13:2011"
 urltarget = "http://192.168.100.13:2009/set_target"
 urllaser = "http://192.168.100.13:2018/activate"
-payload = {"target": {"x": -10000, "y": 20500}}
 payload2 = {"target": "idle"}
 
 # Function to get the current state of the cargo hold
@@ -67,10 +69,11 @@ def fill_cargo_hold():
 
     current_x, current_y = 0, 1
     items_bought = 0
-    maxRow = 11 
+    maxRow = 8
 
     
-    buyRessources.buyItem('Vesta Station', 'IRON', 12)
+    #buyRessources.buyItem('Vesta Station', 'IRON', 12)
+    getGold.buyGold()
     while items_bought < total_to_buy:
         # Move to the next position
         if current_x >= 12:
@@ -83,7 +86,8 @@ def fill_cargo_hold():
             current_x = 0
             current_y = 0
             # FILL FIRST ROW OF INVENTORY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            buyRessources.buyItem('Vesta Station', 'IRON', 12)
+            #buyRessources.buyItem('Vesta Station', 'IRON', 12)
+            getGold.buyGold()
 
             
 
@@ -98,13 +102,69 @@ def fill_cargo_hold():
                 break
         time.sleep(0.45)       
         current_x += 1
+
+
+
+
 import moveToCoordinates
+
+payload = {"target": {"x": -10000, "y": 20500}}
+payloadPlatinum = {"target": {"x": 50233, "y": 77626}}
+payload2 = {"target": "idle"}
+urltarget5 = "http://192.168.100.13:2009/set_target"
+
+payload_core_station = {"target": "Core Station"}
+payload_vesta_station = {"target": "Vesta Station"}
+
 if __name__ == "__main__":
     while True:
-        buyRessources.set_target({"target": "Vesta Station"})
-        time.sleep(30)
-        fill_cargo_hold()
-        buyRessources.set_target({"target": "Core Station"})
-        time.sleep(30)
-        buyRessources.sellAtCore('Core Station', 'IRON', 142)
+        ressourceToBuy4 = 'PLATINUM'
+        if ressourceToBuy4 == 'GOLD':
+            moveToCoordinates.set_target(urltarget5, payload)
+            time.sleep(53)
+            buyRessources.set_target({"target": "idle"})
+            requests.put("http://192.168.100.13:2004/thruster", '{"thrust_percent" : 40}')
+            time.sleep(1)
+            requests.put("http://192.168.100.13:2004/thruster", '{"thrust_percent" : 0}')
+            
+            fill_cargo_hold()
 
+            buyRessources.set_target({"target": "Core Station"})
+            time.sleep(53)
+
+            i = 0
+            while i < 20: 
+                buyRessources.sellAtCore('Core Station', 'GOLD', 12)
+                buyRessources.sellAtCore('Core Station', 'STONE', 12)
+                i += 1
+
+        if ressourceToBuy4 == 'IRON':
+            buyRessources.set_target(payload_vesta_station)
+            time.sleep(30)
+            fill_cargo_hold()
+            buyRessources.set_target(payload_core_station)
+            time.sleep(30)
+            buyRessources.sellAtCore('Core Station', 'IRON', 100)
+
+        if ressourceToBuy4 == 'PLATINUM': 
+            moveToCoordinates.set_target("http://192.168.100.13:2009/set_target", payloadPlatinum)
+            time.sleep(130)
+            buyRessources.set_target({"target": "idle"})
+            requests.put("http://192.168.100.13:2004/thruster", '{"thrust_percent" : 40}')
+            time.sleep(1)
+            requests.put("http://192.168.100.13:2004/thruster", '{"thrust_percent" : 0}')
+
+            fill_cargo_hold()
+            buyRessources.set_target({"target": "Core Station"})
+            time.sleep(130)
+
+            i = 0
+            while i < 10: 
+                buyRessources.sellAtCore('Core Station', 'IRON', 12)
+                buyRessources.sellAtCore('Core Station', 'STONE', 12)
+                buyRessources.sellAtCore('Core Station', 'PLATIN', 12)
+                i += 1
+
+
+
+ 

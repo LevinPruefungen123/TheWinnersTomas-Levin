@@ -51,10 +51,6 @@ def sellAtCore(Target, item, amount):
     payload = {"station": Target, "what": item, "amount": amount}
     try:
         response = requests.post("http://192.168.100.13:2011/sell", json=payload)
-        if response.status_code == 200:
-            print(f"TheOne")
-        else:
-            print(f"TheTwo")
     except requests.RequestException as e:
         print(f"Error setting target: {e}")
 
