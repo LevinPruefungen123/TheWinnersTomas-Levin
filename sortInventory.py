@@ -14,7 +14,7 @@ def get_hold_structure():
 def buyOrGetResource(resource):
     if resource == "IRON": 
         getResources.buyResource(variables.payloadBuySell("Vesta Station", "IRON", 12))
-    elif resource == "GOLD" or resource == "PLATINUM" or resource == "CHRONOTIT": 
+    elif resource == "GOLD" or resource == "PLATINUM" or resource == "CHRONOTIT" or resource == "FRAGILON": 
         getResources.getResourceLaser(resource)
 
 def fillInventory(maxRow1, resource):

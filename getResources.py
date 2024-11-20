@@ -7,14 +7,16 @@ def buyResource(payload):
 
 def getResourceLaser(resource):
     if resource == "GOLD" or resource == "PLATINUM": 
-        amountLaserBeams = 8
+        amountLaserBeams = 7
     if resource == "CHRONOTIT": 
-        amountLaserBeams = 3
+        amountLaserBeams = 1
+    if resource == "FRAGILON": 
+        amountLaserBeams = 10
 
     index = 0
     while index < amountLaserBeams: 
         requests.post(variables.activateLaserURL)        
-        time.sleep(8)
+        time.sleep(9)
         requests.post(variables.deactivateLaserURL)
         index += 1
     
