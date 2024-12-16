@@ -3,6 +3,10 @@ import sellResources
 import sortInventory
 import time
 import requests
+import energyManagement
+import topSecret
+import asyncio
+import getResources
 
 def automatedIron():
     while True:
@@ -21,8 +25,8 @@ def automatedIron():
 
 def goBack():
     moveTo.setTargetByStation("idle")
-    requests.put("http://192.168.100.13:2004/thruster", '{"thrust_percent" : 25}')
-    time.sleep(0.7)
+    requests.put("http://192.168.100.13:2004/thruster", '{"thrust_percent" : 24}')
+    time.sleep(1)
     requests.put("http://192.168.100.13:2004/thruster", '{"thrust_percent" : 0}')
 
 def automatedPlatin():
@@ -44,11 +48,11 @@ def automatedPlatin():
 def automatedChronotit():
     while True:
         moveTo.setTargetByCords(39006, 38652)
-        time.sleep(75)
+        time.sleep(80)
         while True: 
-            time.sleep(5)
             goBack()
-            sortInventory.fillInventory(8, "CHRONOTIT")
+            time.sleep(7)
+            sortInventory.fillInventory(5, "CHRONOTIT")
             break
 
         moveTo.setTargetByStation("Core Station")
@@ -60,19 +64,52 @@ def automatedChronotit():
 
 def automatedFragilon():
     while True:
+        energyManagement.main(energyManagement.new_limits_flying)
         moveTo.setTargetByCords(45081, -40991)
-        time.sleep(20)
-        while True: 
-            time.sleep(5)
+        time.sleep(10)
+        while True:
             goBack()
-            sortInventory.fillInventory(2, "FRAGILON")
+            time.sleep(5)
+            sortInventory.fillInventory(3, "FRAGILON")
             break
         
-        moveTo.setTargetByStation("Core Station")
-        while True:
-            if moveTo.stationInReach("Core Station") == True:
-                time.sleep(10)
-                sellResources.sellFragilon()
-                break
+        asyncio.run(sellFragilon())
 
-automatedFragilon()
+def automatedMagnon(): 
+    energyManagement.main(energyManagement.new_limits_flying)
+    moveTo.setTargetByCords(-55850, -58879)
+    time.sleep(100)
+
+    while True:
+        goBack()
+        time.sleep(5)
+        sortInventory.fillInventory(4, "MAGNON")
+        break
+    energyManagement.main(energyManagement.new_limits_flying)
+    moveTo.setTargetByStation("Core Station")
+    time.sleep(100)
+    energyManagement.main(energyManagement.new_limits_selling_buying)
+    sellResources.sellMagnon()
+
+
+async def sellFragilon():
+    energyManagement.main(energyManagement.new_limits_reactor)
+    time.sleep(6)
+    energyManagement.main(energyManagement.new_limits_charging)
+    time.sleep(250)
+    await topSecret.main(30000, -30000)
+    time.sleep(250)
+    await topSecret.main(15000, -20000)
+    time.sleep(250)
+    await topSecret.main(0, -20000)
+    time.sleep(250)
+    await topSecret.main(0, 0)
+    energyManagement.main(energyManagement.new_limits_selling_buying)
+    sellResources.sellFragilon()
+                
+
+
+if __name__ == "__main__":
+    while True:
+        automatedMagnon()
+

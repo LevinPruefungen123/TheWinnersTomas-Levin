@@ -19,7 +19,6 @@ def setTargetByStation(station):
 
 #move to station by cords
 def setTargetByCords(x, y):
-    print("test")
     try:
         response = requests.post(f"{variables.easySteeringURL}", json={"target": {"x": x, "y": y}})
         response.raise_for_status()
@@ -52,4 +51,19 @@ def stationInReach(station):
         print("Error: Received invalid JSON response for stations in reach.")
     return False
 
-setTargetByCords(-20000, 38000)
+def moveToW():
+    setTargetByCords(-85936, -83194)
+
+def Arak(): 
+    setTargetByCords(-13665, -15380)
+
+def moveToUran():
+    setTargetByCords(-110168.0, -50487.0)
+
+def moveToXyron():
+    setTargetByCords(70359, 19868)
+
+def moveToAurora():
+    setTargetByCords(-11000,-11000)
+
+setTargetByCords(10808, 17124)

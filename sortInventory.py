@@ -2,6 +2,7 @@ import requests
 import variables
 import time
 import getResources
+import energyManagement
 
 def swap_adjacent(a, b): 
     response = requests.post(variables.cargoSwapAdjacentURL, json={"a": a, "b": b}) # swaps the two spots
@@ -14,11 +15,12 @@ def get_hold_structure():
 def buyOrGetResource(resource):
     if resource == "IRON": 
         getResources.buyResource(variables.payloadBuySell("Vesta Station", "IRON", 12))
-    elif resource == "GOLD" or resource == "PLATINUM" or resource == "CHRONOTIT" or resource == "FRAGILON": 
+    elif resource == "GOLD" or resource == "PLATINUM" or resource == "CHRONOTIT" or resource == "FRAGILON" or "MAGNON": 
         getResources.getResourceLaser(resource)
 
 def fillInventory(maxRow1, resource):
-    current_x, current_y = 0, 1
+    energyManagement.main(energyManagement.new_limits_sorting)
+    current_x, current_y = 0, 0
     items_bought = 0
     maxRow = maxRow1
     amountItemsToBuy = maxRow * 12
@@ -32,7 +34,7 @@ def fillInventory(maxRow1, resource):
         
         if current_y >= maxRow:
             maxRow -= 1
-            current_x, current_y = 0, 1
+            current_x, current_y = 0, 0
             buyOrGetResource(resource)
             
 
@@ -41,10 +43,10 @@ def fillInventory(maxRow1, resource):
 
         # in this if statement (if y is bigger than 0) the two slots will get switched (it moves one y down)    
         if current_y > 0:
-            swap_response = swap_adjacent({"x": current_x, "y": current_y}, {"x": current_x, "y": current_y -1})
+            swap_response = swap_adjacent({"x": current_x, "y": current_y}, {"x": current_x, "y": current_y - 1})
             if swap_response["kind"] != "success":
                 print("Failed to swap items", swap_response)
                 break
 
-        time.sleep(0.45)       
+        time.sleep(0.42)       
         current_x += 1
